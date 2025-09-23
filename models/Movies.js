@@ -11,7 +11,7 @@ const movieSchema = new mongoose.Schema(
       },
     ],
     numberInStock: { type: Number, min: 0 },
-    dailyRentalRate: { type: Number, min: 0 },
+    dailyRentalRate: Number,
   },
   {
     toJSON: {
