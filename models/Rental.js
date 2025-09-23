@@ -13,10 +13,15 @@ const rentalSchema = new mongoose.Schema(
       ref: "Movie",
       required: true,
     },
+    dateRented: { type: Date, required: true },
     dateReturned: { type: Date },
     rentalFee: { type: Number, min: 0, required: true },
   },
   {
-    timestamps: true, // This is the key option
+    timestamps: true, // createdAt, updatedAt
   }
 );
+
+// // Create and Export model
+const Rental = mongoose.model("Rental", rentalSchema);
+module.exports = Rental;

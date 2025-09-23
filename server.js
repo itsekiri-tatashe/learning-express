@@ -17,11 +17,13 @@ require("./database");
 const genreRouter = require("./routes/genreRoutes");
 const customerRouter = require("./routes/customerRoutes");
 const movieRouter = require("./routes/movieRoutes");
+const rentalRouter = require("./routes/rentalRoutes");
 
 // Use Routes
 app.use("/api/genres", genreRouter);
 app.use("/api/customers", customerRouter);
 app.use("/api/movies", movieRouter);
+app.use("/api/rentals", rentalRouter);
 
 // Start Server
 const PORT = process.env.PORT || 3000;
