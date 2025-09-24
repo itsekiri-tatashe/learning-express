@@ -6,6 +6,7 @@ const Rental = require("../models/Rental");
 
 // Import Joi schemas
 const { createRentalSchema } = require("../validators/rentalSchema");
+const Movie = require("../models/Movies");
 
 // Get Rentals
 router.get("/", async (req, res) => {
@@ -34,6 +35,12 @@ router.get("/", async (req, res) => {
 // });
 
 // Add New customer (POST)
+
+/* 
+Check if movie is in stock, if in stiok throw error
+If in stock subtract -1
+
+*/
 router.post("/", async (req, res) => {
   // Validation
   const { error } = createRentalSchema.validate(req.body);
@@ -42,6 +49,30 @@ router.post("/", async (req, res) => {
   }
 
   try {
+    // Correctly get the movie ID from the request body
+    const movieId = req.body.movie;
+
+    // Atomically check and update the movie's stock
+    // Corrected to use findOneAndUpdate for compound query
+    const updatedMovie = await Movie.findOneAndUpdate(
+      {
+        _id: movieId, // Condition: Use the ID from the body
+        numberInStock: { $gt: 0 }, // Condition: only update if stock is greater than 0
+      },
+      {
+        $inc: { numberInStock: -1 }, // Action: atomically decrement the stock by 1
+      },
+      { new: true } // Return the updated document
+    );
+
+    // If updatedMovie is null, the query failed (out of stock or ID not found)
+    if (!updatedMovie) {
+      return res
+        .status(409)
+        .json({ message: "Movie is out of stock or does not exist." });
+    }
+
+    // Create Rental
     const rental = new Rental(req.body);
     const newRental = await rental.save();
     res.status(201).json(newRental);

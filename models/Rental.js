@@ -19,6 +19,11 @@ const rentalSchema = new mongoose.Schema(
   },
   {
     timestamps: true, // createdAt, updatedAt
+    toJSON: {
+      // This removes the __v field from the output
+      versionKey: false,
+    },
+    toObject: { versionKey: false },
   }
 );
 
