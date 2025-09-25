@@ -5,6 +5,8 @@ const app = express();
 
 // 3PL
 const morgan = require("morgan");
+const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 
 // Using Middleware
 app.use(express.json());

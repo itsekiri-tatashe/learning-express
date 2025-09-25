@@ -198,10 +198,6 @@ router.put("/return/:id", async (req, res) => {
       rental: savedRental,
     });
   } catch (err) {
-    // Centralized error handling
-    if (err.name === "CastError") {
-      return res.status(400).json({ message: "Invalid ID format." });
-    }
     console.error("Error returning rental:", err);
     res.status(500).json({ message: "Internal server error." });
   }

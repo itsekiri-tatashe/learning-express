@@ -7,7 +7,7 @@ const createMovieSchema = Joi.object({
   dailyRentalRate: Joi.number().optional(),
 
   // The genres field must be an array of strings
-  genres: Joi.array().items(Joi.string().required()),
+  genres: Joi.array().items(Joi.objectId().required()),
 });
 
 // Export
