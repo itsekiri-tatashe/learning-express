@@ -16,11 +16,11 @@ const rentalSchema = new mongoose.Schema(
     dateRented: { type: Date, required: true },
     dateReturned: { type: Date },
     rentalFee: { type: Number, min: 0, required: true },
+    isReturned: { type: Boolean, default: false },
   },
   {
     timestamps: true, // createdAt, updatedAt
     toJSON: {
-      // This removes the __v field from the output
       versionKey: false,
     },
     toObject: { versionKey: false },
