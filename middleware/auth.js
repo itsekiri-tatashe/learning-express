@@ -3,22 +3,20 @@ const jwt = require("jsonwebtoken");
 // Auth Middle to Verify Token
 function auth(req, res, next) {
   const token = req.headers["x-auth-token"];
-  // If no token is provided, return a 401 Unauthorized
-  if (token == null) {
+
+  if (!token) {
     return res
-      .sendStatus(401)
+      .status(401)
       .json({ message: "Authentication token is required." });
   }
 
-  // Verify the token using your secret key
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: "Invalid or expired token." });
-    }
-
-    req.user = user._id;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // store entire payload (e.g. { _id, email, role })
     next();
-  });
+  } catch (err) {
+    return res.status(403).json({ message: "Invalid or expired token." });
+  }
 }
 
 module.exports = auth;
