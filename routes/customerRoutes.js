@@ -10,6 +10,9 @@ const {
   updateCustomerSchema,
 } = require("../validators/customerSchema");
 
+// Middleware
+const auth = require("../middleware/auth");
+
 // Get Customers
 router.get("/", async (req, res) => {
   try {
@@ -37,7 +40,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Add New customer (POST)
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   // Validation
   const { error } = createCustomerSchema.validate(req.body);
   if (error) {
@@ -71,7 +74,7 @@ router.post("/", async (req, res) => {
 });
 
 // Update Customer (PUT)
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   // Validation
   const { error } = updateCustomerSchema.validate(req.body);
   if (error) {

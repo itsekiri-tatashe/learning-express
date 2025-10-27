@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+// Middleware
+const auth = require("../middleware/auth");
+
 //  Import Schema
 const Movie = require("../models/Movies");
 const { createMovieSchema } = require("../validators/movieSchema");
@@ -32,7 +35,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Add New Genre (POST)
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   // Validation
   const { error } = createMovieSchema.validate(req.body);
   if (error) {
@@ -52,7 +55,7 @@ router.post("/", async (req, res) => {
 });
 
 // Update Genre (PUT)
-// router.put("/:id", async (req, res) => {
+// router.put("/:id",auth, async (req, res) => {
 //   const { id } = req.params;
 
 //   try {

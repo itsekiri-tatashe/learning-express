@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
+// Middleware
+const auth = require("../middleware/auth");
+
 //  Import Genre Schema
 const Genre = require("../models/Genres");
-
 
 // Get All Genres
 router.get("/", async (req, res) => {
@@ -32,7 +34,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Add New Genre (POST)
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { title, description } = req.body;
 
   const genre = new Genre({
@@ -52,7 +54,7 @@ router.post("/", async (req, res) => {
 });
 
 // Update Genre (PUT)
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -76,7 +78,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // Delete Genre (DELETE)
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   const { id } = req.params;
 
   try {

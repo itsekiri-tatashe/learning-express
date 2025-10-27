@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+// Middleware
+const auth = require("../middleware/auth");
+
 // 3PL
 const { differenceInDays } = require("date-fns");
 
@@ -17,7 +20,7 @@ const {
 } = require("../validators/rentalSchema");
 
 // Get Rentals
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const rentals = await Rental.find();
     res.json(rentals);
@@ -49,7 +52,7 @@ If in stock subtract -1
 
 */
 // Create a new Rental
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   // Joi Validation
   const { error } = createRentalSchema.validate(req.body);
   if (error) {
@@ -108,7 +111,7 @@ router.post("/", async (req, res) => {
 });
 
 // Update Rental (PUT)
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   // Validation
   const { error } = updateRentalSchema.validate(req.body);
   if (error) {
@@ -138,7 +141,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // Return a Rental
-router.put("/return/:id", async (req, res) => {
+router.put("/return/:id", auth, async (req, res) => {
   // Get Rental ID
   const { id } = req.params;
 
