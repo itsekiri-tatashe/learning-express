@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
 
+// Middle
+const auth = require("../middleware/auth");
 // Import DB Schema
 const User = require("../models/User");
 
@@ -75,4 +77,10 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Me
+router.get("/me", auth, async (req, res) => {
+  // Get current user from the current token
+  const user = await User.findById(req.user.id).select("-password");
+  res.send(user);
+});
 module.exports = router;
