@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    isAdmin: Boolean,
   },
   { toObject: { versionKey: false } }
 );
@@ -16,6 +17,7 @@ userSchema.methods.generateAuthToken = function () {
   const payload = {
     id: this._id,
     email: this.email,
+    isAdmin: this.isAdmin,
   };
 
   // // Sign the token with the payload and secret key

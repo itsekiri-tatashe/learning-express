@@ -3,6 +3,7 @@ const router = express.Router();
 
 // Middleware
 const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 
 //  Import Genre Schema
 const Genre = require("../models/Genres");
@@ -78,7 +79,7 @@ router.put("/:id", auth, async (req, res) => {
 });
 
 // Delete Genre (DELETE)
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", [auth, admin], async (req, res) => {
   const { id } = req.params;
 
   try {
