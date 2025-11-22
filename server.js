@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const express = require("express");
 const app = express();
 
@@ -8,9 +7,16 @@ const morgan = require("morgan");
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 
+// Swagger Docs
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./docs/swagger");
+
 // Using Middleware
 app.use(express.json());
 app.use(morgan("tiny"));
+
+// Swagger Endpoint
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Execute DB
 require("./database");
